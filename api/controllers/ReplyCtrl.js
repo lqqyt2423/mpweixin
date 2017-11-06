@@ -76,13 +76,8 @@ module.exports = class ReplyCtrl extends ApiBase {
     const args = ctx.args;
     if (this._validate(args)) {
       wechat(wechatConfig, (req, res, next) => {
-        console.log(req.weixin);
-        ctx.respond({data: 'ok'}, next);
-      })
-      // this._textParser(ctx.req, text => {
-      //   console.log(text);
-      //   ctx.respond({data: 'ok'}, next);
-      // });
+			  res.reply('有任何问题联系微信:\n18817507530');
+      })(ctx.req, ctx.res, next);
     } else {
       ctx.respond(new Error('not weixin'), next);
     }
