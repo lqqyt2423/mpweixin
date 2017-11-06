@@ -73,10 +73,20 @@ module.exports = class ReplyCtrl extends ApiBase {
   }
 
   reply(ctx, next) {
+    let replyArray = [];
+    replyArray.push((message, res) => {
+      res.reply('有任何问题联系微信:\n18817507530');
+      return true;
+    });
     const args = ctx.args;
     if (this._validate(args)) {
       wechat(wechatConfig, (req, res, next) => {
-			  res.reply('有任何问题联系微信:\n18817507530');
+        let message = req.weixin;
+        // 迭代器
+        for (let i=0, len=replyArray.length; i<len; i++) {
+          let fn = replyArray[i];
+          if (fn(message, res)) break;
+        }
       })(ctx.req, ctx.res, next);
     } else {
       ctx.respond(new Error('not weixin'), next);
