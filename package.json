@@ -37,6 +37,7 @@
     "ovt-plugin-validator": "^1.1.0",
     "redis": "^2.6.5",
     "response-time": "^2.3.2",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "wechat": "^2.1.0"
   }
 }

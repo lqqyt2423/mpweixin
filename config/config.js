@@ -22,5 +22,11 @@ module.exports = {
     autoIndex: true
   },
   sessionSecret: 'WOUDsK1FarqNq38JnvcTFi7zsownTQvTpgrma77qidQ=',
-  allowedOrigins: []
+  allowedOrigins: [],
+  wechatConfig: {
+    token: 'weixin',
+    appid: 'wx7c2d750b6e8b6285',
+    encodingAESKey: 'B0s6WqtsVz7ZhbODgD6TwvT3DFVGnl2xMLOysqLHG13',
+    checkSignature: true
+  }
 };
