@@ -75,6 +75,13 @@ module.exports = class ReplyCtrl extends ApiBase {
   reply(ctx, next) {
     let replyArray = [];
     replyArray.push((message, res) => {
+      if (message.MsgType == 'image' && message.FromUserName == 'oc8_iw4nnQgE8mYbTJaTxRy_260E') {
+        console.log(message);
+        res.reply('hi liqiang');
+        return true;
+      }
+    });
+    replyArray.push((message, res) => {
       res.reply('有任何问题联系微信:\n18817507530');
       return true;
     });
