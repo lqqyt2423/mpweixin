@@ -14,31 +14,57 @@ module.exports = class ReplyCtrl extends ApiBase {
   }
 
   initConfig() {
+    let validateSchema = {
+      signature: ovt.string().desc('signature'),
+      timestamp: ovt.string().desc('timestamp'),
+      nonce: ovt.string().desc('nonce')
+    };
     return {
       index: {
-        description: 'reply',
-        params: ovt.object().keys({
-          signature: ovt.string().desc('signature'),
-          echostr: ovt.string().desc('echostr'),
-          timestamp: ovt.string().desc('timestamp'),
-          nonce: ovt.string().desc('nonce')
+        description: 'validate',
+        params: ovt.object(validateSchema).keys({
+          echostr: ovt.string().desc('echostr')
         }).toObject(),
         route: { verb: 'get', path: '' }
+      },
+      reply: {
+        description: 'reply',
+        params: ovt.object(validateSchema).keys({
+          openid: ovt.string().desc('openid')
+        }).toObject(),
+        route: { verb: 'post', path: '' }
       }
     };
   }
 
-  index(ctx, next) {
-    const models = ctx.models;
-    const args = ctx.args;
+  _validate(args) {
     const token = 'weixin';
+    if (!args.timestamp || !args.nonce || !args.signature) return false;
     let aQuery = [token, args.timestamp, args.nonce];
     aQuery.sort();
     let sQuery = sha1(aQuery.join(''));
     if (sQuery == args.signature) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  index(ctx, next) {
+    const args = ctx.args;
+    if (this._validate(args)) {
       ctx.res.send(args.echostr);
     } else {
-      ctx.respond(new Error('error'), next);
+      ctx.respond(new Error('not weixin'), next);
+    }
+  }
+
+  reply(ctx, next) {
+    const args = ctx.args;
+    if (this._validate(args)) {
+      console.log(ctx.header);
+    } else {
+      ctx.respond(new Error('not weixin'), next);
     }
   }
 
