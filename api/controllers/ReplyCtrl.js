@@ -74,10 +74,17 @@ module.exports = class ReplyCtrl extends ApiBase {
 
   reply(ctx, next) {
     let replyArray = [];
+    // self save img
     replyArray.push((message, res) => {
       if (message.MsgType == 'image' && message.FromUserName == 'oc8_iw4nnQgE8mYbTJaTxRy_260E') {
-        console.log(message);
-        res.reply('hi liqiang');
+        res.reply('admin send image to me');
+        return true;
+      }
+    });
+    // 关注
+    replyArray.push((message, res) => {
+      if (message.MsgType == 'event' && message.Event == 'subscribe') {
+        res.reply('欢迎关注\n有任何问题联系微信:\n18817507530');
         return true;
       }
     });
