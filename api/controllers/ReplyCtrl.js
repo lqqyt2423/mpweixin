@@ -50,6 +50,17 @@ module.exports = class ReplyCtrl extends ApiBase {
     }
   }
 
+	_textParser(req, cb) {
+	  let body = [];
+		req.on('data', chunk => {
+	    body.push(chunk);
+	  });
+		req.on('end', () => {
+			body = Buffer.concat(body).toString();
+			cb(body);
+		});
+	}
+
   index(ctx, next) {
     const args = ctx.args;
     if (this._validate(args)) {
@@ -62,7 +73,10 @@ module.exports = class ReplyCtrl extends ApiBase {
   reply(ctx, next) {
     const args = ctx.args;
     if (this._validate(args)) {
-      console.log(ctx.header);
+			this._textParser(ctx.req, text => {
+				console.log(text);
+			  ctx.respond({data: 'ok'}, next);
+			});
     } else {
       ctx.respond(new Error('not weixin'), next);
     }
