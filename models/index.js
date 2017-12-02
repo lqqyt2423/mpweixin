@@ -29,7 +29,7 @@ if (!config.env.isProduction()) {
 
 // Load All Models
 [
-  'User'
+  'Resource'
 ].forEach(function(modelName) {
   require(path.join(__dirname, modelName));
   debug(`Model '${modelName}' loaded`);
