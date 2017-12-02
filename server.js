@@ -32,7 +32,7 @@ async function handle(req, res) {
     } else {
       let body = await loadReqBody(req);
       body = body.toString();
-      let message = await parseWeiin(body);
+      let message = await parseWeixin(body);
       res.write(reply('ok hello', message.ToUserName, message.FromUserName, message));
     }
   }
