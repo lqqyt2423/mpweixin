@@ -3,7 +3,7 @@
 const http = require('http');
 const url = require('url');
 const crypto = require('crypto');
-const parseWeiin = require('./parseWeiin');
+const parseWeixin = require('./parseWeixin');
 const reply = require('./reply');
 
 const server = http.createServer(handle);
