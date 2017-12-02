@@ -4,7 +4,7 @@ const http = require('http');
 const url = require('url');
 const crypto = require('crypto');
 const parseWeixin = require('./parseWeixin');
-const reply = require('./reply');
+const getReplyMessage = require('./getReplyMessage');
 
 const server = http.createServer(handle);
 
@@ -18,7 +18,6 @@ async function handle(req, res) {
   let pathname = link.pathname;
   let args = link.query;
   let method = req.method;
-  // /weixin/api
   if (pathname == '/weixin/api/reply' && method == 'GET') {
     if (_validate(args)) {
       res.write(args.echostr);
@@ -33,7 +32,8 @@ async function handle(req, res) {
       let body = await loadReqBody(req);
       body = body.toString();
       let message = await parseWeixin(body);
-      res.write(reply('ok hello', message.ToUserName, message.FromUserName, message));
+      let replyMessage = getReplyMessage(message);
+      res.write(replyMessage);
     }
   }
   res.end();
@@ -45,9 +45,9 @@ function _validate(args) {
   if (!args.timestamp || !args.nonce || !args.signature) return false;
   let aQuery = [token, args.timestamp, args.nonce];
   aQuery.sort();
-  let shasum = crypto.createHash('sha1');
-  shasum.update(aQuery.join(''));
-  return shasum.digest('hex') === args.signature;
+  let sha = crypto.createHash('sha1');
+  sha.update(aQuery.join(''));
+  return sha.digest('hex') === args.signature;
 }
 
 function loadReqBody(req) {
