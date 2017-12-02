@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "prod": "NODE_ENV=production pm2 start server.js --name=\"mpweixin\""
   },
   "repository": {
     "type": "git",
