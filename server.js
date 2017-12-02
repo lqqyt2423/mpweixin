@@ -29,11 +29,15 @@ async function handle(req, res) {
     if (!_validate(args)) {
       res.statusCode = 404;
     } else {
-      let body = await loadReqBody(req);
-      body = body.toString();
-      let message = await parseWeixin(body);
-      let replyMessage = getReplyMessage(message);
-      res.write(replyMessage);
+      try {
+        let body = await loadReqBody(req);
+        body = body.toString();
+        let message = await parseWeixin(body);
+        let replyMessage = getReplyMessage(message);
+        res.write(replyMessage);
+      } catch(e) {
+        console.log(e);
+      }
     }
   }
   res.end();

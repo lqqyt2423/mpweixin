@@ -17,7 +17,7 @@ module.exports = function(message) {
 function eachRules() {
   let message = shift.call(arguments);
   for (let i = 0, len = arguments.length; i < len; i++) {
-    let ruleFn = arguments[0];
+    let ruleFn = arguments[i];
     let replyContent = ruleFn(message);
     if (replyContent) {
       return reply(replyContent, message.ToUserName, message.FromUserName, message);
@@ -61,7 +61,7 @@ function saveImgFromJike(message) {
             let extname = item.format || 'png';
             let picUrl = item.picUrl;
             let sha = crypto.createHash('sha1');
-            sha.update(PicUrl);
+            sha.update(picUrl);
             let filename = sha.digest('hex') + '.' + extname;
             request(picUrl).on('end', () => {
               let resource = new Resource({
